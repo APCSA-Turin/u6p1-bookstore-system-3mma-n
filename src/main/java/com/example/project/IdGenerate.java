@@ -2,15 +2,25 @@ package com.example.project;
 
 public class IdGenerate{ //This class contains statics variable and methods, you do not initalize an object to use it.
     
-    // //requires 1 private attribute String currentId. You must initialize it to 99
+    // initializes the current ID to 99
+    private static String currentID = "99";
 
-    // //requires one empty constructor
+    // empty private constructor
+    private IdGenerate() {}
 
+    // returns the currentID variable
+    public static String getCurrentId() {
+        return currentID;
+    }
 
-    // public  getCurrentId(){}
+    // resets the currentID variable to 99
+    public static void reset() {
+        currentID = "99";
+    }
 
-    // public  reset(){} //must reset the currentId back to 99
-
-
-    // public generateID(){} //generates a new id, when called it will increment the currentId by 1.. Hint pay attention to data type of currentId
+    //generates a new id (incremented by 1).
+    public static void generateID(){
+        // parses an int out of the String currentID, increments it, and then converts it back to a String
+        currentID = "" + (Integer.valueOf(currentID) + 1);
+    }
 }
