@@ -7,50 +7,50 @@ public class BookStore{
     private User[] users;
 
     // requires 1 empty constructor
-    public BookStore() {}
+    public BookStore() {
+        users = new User[10];
+        books = new Book[0];
+    }
 
+    // returns the list of users
     public User[] getUsers(){
         return users;
     }
 
+    // sets the list of users
     public void setUsers(User[] u){
         users = u;
     }
 
+    // returns the list of books
     public Book[] getBooks(){
         return books;
     }
 
     // adds a user to the end of the user list
     public void addUser(User user){
-        // creates a temporary copy of the current user list
-        User[] temp = users;
-        // sets the user list to a new blank list with a length 1 higher
-        users = new User[temp.length + 1];
-        // fills in value of the temporary copy into the new user list
-        for (int i = 0; i < temp.length; i++) {
-            users[i] = temp[i];
+        // iterates through the user list to find the first null value
+        for (int i = 0; i < users.length; i++) {
+            if (users[i] == null) {
+                // adds the user and breaks the loop
+                users[i] = user;
+                break;
+            }
         }
-        // sets the final (still blank) value in the new user list to the added user
-        users[users.length - 1] = user;
     } 
 
     // removes a user from the user list
     public void removeUser(User user){
-        // creates a temporary copy of the current user list
-        User[] temp = users;
-        // sets the user list to a new blank list with a length 1 lower
-        users = new User[temp.length - 1];
-        // fills in values of the temporary copy (before the user to be removed) into the new user list
-        int idx = 0;
-        while (temp[idx] != user) {
-            users[idx] = temp[idx];
-            idx++;
+        // iterates through the user list to find the user to be removed
+        for (int i = 0; i < users.length; i++) {
+            if (users[i] == user) {
+                // removes the user and breaks the loop
+                users[i] = null;
+                break;
+            }
         }
-        // fills in values of the temporary copy (after the user that will be removed) into the new user list
-        for (int i = idx; i < users.length; i++) {
-            users[i] = temp[i + 1];
-        }
+        consolidateUsers();
+        
     }
 
     // moves all users (that aren't null values) to the front of the user list
@@ -83,28 +83,72 @@ public class BookStore{
         books[books.length - 1] = book;
     }
 
-    public void insertBook(Book book, int index){}
+    public void insertBook(Book book, int index){
+        // creates a temporary copy of the book list
+        Book[] temp = books;
+        // sets the book list to a new blank list with a length 1 higher
+        books = new Book[temp.length + 1];
+        // fills in values of the temporary copy (before index) into the new book list
+        for (int i = 0; i < index; i++) {
+            books[i] = temp[i];
+        }
+        // adds the specified book to the correct index
+        books[index] = book;
+        // fills in values of the temporary copy (after index) into the new book list
+        for (int i = index; i < temp.length; i++) {
+            books[i + 1] = temp[i];
+        }
+
+    }
 
     // removes a book from the book list
     public void removeBook(Book book){
-        // creates a temporary copy of the book list
-        Book[] temp = books;
-        // sets the book list to a new blank list with a length 1 lower
-        books = new Book[temp.length - 1];
-        // fills in values of the temporary copy (before the book to be removed) into the new book list
-        int idx = 0;
-        while (temp[idx] != book) {
-            books[idx] = temp[idx];
-            idx++;
-        }
-        // fills in values of the temporary copy (after the book that will be removed) into the new book list
-        for (int i = idx; i < books.length; i++) {
-            books[i] = temp[i + 1];
+        // if the book has at least 2 copies left, 1 copy is removed
+        if (book.getQuantity() > 1) {
+            book.setQuantity(book.getQuantity() - 1);
+        // if the book has only one copy left, it must be removed from the list
+        } else {
+            // creates a temporary copy of the book list
+            Book[] temp = books;
+            // sets the book list to a new blank list with a length 1 lower
+            books = new Book[temp.length - 1];
+            // fills in values of the temporary copy (before the book to be removed) into the new book list
+            int idx = 0;
+            while (temp[idx] != book) {
+                books[idx] = temp[idx];
+                idx++;
+            }
+            // fills in values of the temporary copy (after the book that will be removed) into the new book list
+            for (int i = idx; i < books.length; i++) {
+                books[i] = temp[i + 1];
+            }
         }
     }
        
-    // public String bookStoreBookInfo(){} //you are not tested on this method but use it for debugging purposes
+    public String bookStoreBookInfo(){
+        String str = "";
+        for (Book book : books) {
+            str += "\n";
+            if (book == null) {
+                str += "empty";
+            } else {
+                str += book.bookInfo();
+            }
+        }
+        return str;
+    }
 
-    // public String bookStoreUserInfo(){} //you are not tested on this method but use it for debugging purposes
+    public String bookStoreUserInfo(){
+        String str = "Users:";
+        for (User user : users) {
+            str += ("\n------------------------");
+            if (user == null) {
+                str += "\nempty";
+            } else {
+                str += "\n" + user.userInfo();
+            }
+        }
+        return str;
+    }
 
 }

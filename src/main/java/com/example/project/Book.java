@@ -17,6 +17,7 @@ public class Book{
         quantity = q;
     }
 
+    // Each method below gets or sets each respective attribute of the book
     public String getTitle() {
         return title;
     }
@@ -56,6 +57,8 @@ public class Book{
     public void setQuantity(int q) {
         quantity = q;
     }
+    // end of getters and setters
+
 
     // Returns information stored in the book's instance variables by appending each to a new String
     // Format: "Title: [], Author: [], Year: [], ISBN: [], Quantity: []"

@@ -12,7 +12,7 @@ public class User{
     public User(String n, String id) {
         name = n;
         Id = id;
-        books = null;
+        books = new Book[5];
     }
 
     // returns the user's name
@@ -60,7 +60,7 @@ public class User{
                 str += book.bookInfo();
             }
         }
-        return str;
+        return str + "\n";
     }
 
     // Returns The user's name, ID, and a list of info about the books they've checked out.
@@ -73,7 +73,7 @@ public class User{
     ...
     */
     public String userInfo(){
-        return "Name: " + name + "\nID: " + Id + "\nBooks:\n" + bookListInfo();
+        return "Name: " + name + "\nId: " + Id + "\nBooks: " + bookListInfo();
     }
        
 }
