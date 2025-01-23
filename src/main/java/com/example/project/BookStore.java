@@ -151,4 +151,24 @@ public class BookStore{
         return str;
     }
 
+    // returns a book based on title or ISBN (null if the book isn't found)
+    public Book findBook(String str) {
+        for (int i = 0; i < books.length; i++) {
+            Book book = books[i];
+            if (book.getTitle().equals(str) || book.getIsbn().equals(str)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    // returns the index of book in bookList
+    public int bookIndex(Book book) {
+        for (int i = 0; i < books.length; i++) {
+            if (books[i] == book) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
