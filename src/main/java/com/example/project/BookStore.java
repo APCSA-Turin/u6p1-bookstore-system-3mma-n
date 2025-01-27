@@ -151,7 +151,7 @@ public class BookStore{
         return str;
     }
 
-    // returns a book based on title or ISBN (null if the book isn't found)
+    // returns a book based on title or ISBN (null if the book isn't found) (ADDED FUNCTION)
     public Book findBook(String str) {
         for (int i = 0; i < books.length; i++) {
             Book book = books[i];
@@ -162,7 +162,7 @@ public class BookStore{
         return null;
     }
 
-    // returns the index of book in bookList
+    // returns the index of book in bookList (ADDED FUNCTION)
     public int bookIndex(Book book) {
         for (int i = 0; i < books.length; i++) {
             if (books[i] == book) {

@@ -70,7 +70,23 @@ public class Runner {
         return false;
     }
 
-    public static Book findBook(BookStore store, store)
+    public static Book findBook(BookStore store, String str) {
+        for (Book current : store.getBooks()) {
+            if (str.equals(current.getTitle()) || str.equals(current.getIsbn())) {
+                return current;
+            }
+        }
+        return null;
+    }
+
+    public static User findUser(BookStore store, String str) {
+        for (User current : store.getUsers()) {
+            if (str.equals(current.getName()) || str.equals(current.getId())) {
+                return current;
+            }
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
         int input = 0;
@@ -83,7 +99,15 @@ public class Runner {
         Book b4 = new Book("Brave New World", "Aldous Huxley", 1932, "978-0060850524", 3);
         Book b5 = new Book("Test","Author",1900, "1234", 1);
         store.addBook(b1);store.addBook(b2);store.addBook(b3);store.addBook(b4);store.addBook(b5);
-        store.addBook(b2);
+        IdGenerate.generateID();
+        User u1 = new User("John",IdGenerate.getCurrentId());
+        IdGenerate.generateID();
+        User u2 = new User("Jane",IdGenerate.getCurrentId());
+        IdGenerate.generateID();
+        User u3 = new User("Mary",IdGenerate.getCurrentId());
+        IdGenerate.generateID();
+        User u4 = new User("Alex",IdGenerate.getCurrentId());
+        store.addUser(u1);store.addUser(u2);store.addUser(u3);store.addUser(u4);
         clear();
         display(store);
 
@@ -95,6 +119,7 @@ public class Runner {
             System.out.println("5) Register New Student");
             System.out.println("6) Check Student Registration");
             System.out.println("7) Upgrade Book Quantity");
+            System.out.println("-1) Quit");
 
 
             System.out.print("Enter Choice: ");
@@ -125,12 +150,34 @@ public class Runner {
                     display(store);
 
                     System.out.println(quantity + " copies of '" + title + "' by " + author + " have been added at row " + 
-                    (store.getBooks().length / 5 + 1) + ", column " + (store.getBooks().length % 5 + 1) + ".");
+                    (store.getBooks().length / 5 + 1) + ", column " + (store.getBooks().length % 5) + ".");
 
                     stay = userContinues(sc);
                 }
             } else if (input == 2) {
-                
+                boolean stay = true;
+                while (stay) {
+                    clear();
+                    display(store);
+                    System.out.println("Selected: Search for a Book");
+                    System.out.println("Required info: Name or ID of student, Title or ISBN of selected book.");
+                    System.out.print("Enter Title or ISBN of Book: ");
+                    String str = sc.nextLine();
+                    Book book = store.findBook(str);
+                    if (book != null) {
+                        System.out.print("Enter Student Name or ID: ");
+                        str = sc.nextLine();
+                        User student = findUser(store, str);
+                        if (student != null) {
+                            
+                        } else {
+                            System.out.println("Error: Unable to locate student with this Name or ID");
+                        }
+                    } else {
+                        System.out.println("Error: Unable to locate book with this Title or ISBN.");
+                    }
+                    stay = userContinues(sc);
+                }
             } else if (input == 3) {
                 
             } else if (input == 4) {
@@ -153,14 +200,66 @@ public class Runner {
                     
                 }
             } else if (input == 5) {
+                boolean stay = true;
+                while (stay) {
+                    clear();
+                    display(store);
+                    System.out.println("Selected: Register New Student");
+                    if (!IdGenerate.getCurrentId().equals("109")) {
+                        System.out.print("Enter Student Name: ");
+                        String name = sc.nextLine();
+                        IdGenerate.generateID();
+                        store.addUser(new User(name, IdGenerate.getCurrentId()));
+                        clear();
+                        display(store);
+                        System.out.println(name + " has now been registered and assigned ID number " + IdGenerate.getCurrentId() + ".");
 
+                    } else {
+                        System.out.println("Error: 10 students already registered. No more can be added.");
+                    }
+                    stay = userContinues(sc);
+                }
             } else if (input == 6) {
-
+                boolean stay = true;
+                while (stay) {
+                    clear();
+                    display(store);
+                    System.out.println("Selected: Check Student Registration");
+                    System.out.print("Enter Student Name or ID: ");
+                    String str = sc.nextLine();
+                    User student = findUser(store, str);
+                    if (student != null) {
+                        System.out.println("This student is registered! Displaying available information: ");
+                        System.out.println(student.userInfo());
+                    } else {
+                       System.out.println("A student with this name or ID has not yet been registered.");
+                    }
+                    stay = userContinues(sc);
+                }
             } else if (input == 7) {
                 boolean stay = true;
                 while (stay) {
+                    clear();
+                    display(store);
                     System.out.println("Selected: Upgrade Book Quantity");
-                    System.out.print();
+                    System.out.print("Enter Title or ISBN: ");
+                    String str = sc.nextLine();
+                    Book book = store.findBook(str);
+                    if (book != null) {
+                        System.out.print("Enter Quantity to Add: ");
+                        int added = sc.nextInt();
+                        sc.nextLine();
+                        if (added > 0) {
+                            book.setQuantity(book.getQuantity() + added);
+                            clear();
+                            display(store);
+                            System.out.println("Quantity of '" + book.getTitle() + "' is now " + book.getQuantity() + " copies.");
+                        } else {
+                            System.out.println("Error: Must add a positive number of copies.");
+                        }
+                    } else {
+                        System.out.println("Error: Unable to locate book with this Title or ISBN.");
+                    }
                     stay = userContinues(sc);
                 }
             }
