@@ -124,51 +124,50 @@ public class BookStore{
             }
         }
     }
-       
+    
+    // returns an info string about every book in the books list
     public String bookStoreBookInfo(){
         String str = "";
+        // iterates through every book in the books list
         for (Book book : books) {
             str += "\n";
             if (book == null) {
+                // adds empty if the book in this slot is null
                 str += "empty";
             } else {
+                // uses a call to the Book class's bookInfo function to print info about each book
                 str += book.bookInfo();
             }
         }
         return str;
     }
 
+
     public String bookStoreUserInfo(){
         String str = "Users:";
+        // iterates through each user
         for (User user : users) {
             str += ("\n------------------------");
             if (user == null) {
+                // adds empty if the user value is null
                 str += "\nempty";
             } else {
+                // uses a call to the User class's userInfo function
                 str += "\n" + user.userInfo();
             }
         }
         return str;
     }
 
-    // returns a book based on title or ISBN (null if the book isn't found) (ADDED FUNCTION)
-    public Book findBook(String str) {
-        for (int i = 0; i < books.length; i++) {
-            Book book = books[i];
-            if (book.getTitle().equals(str) || book.getIsbn().equals(str)) {
-                return book;
-            }
-        }
-        return null;
-    }
-
     // returns the index of book in bookList (ADDED FUNCTION)
     public int bookIndex(Book book) {
         for (int i = 0; i < books.length; i++) {
+            // cheks each item in the book list to see if it matches the inputted book
             if (books[i] == book) {
                 return i;
             }
         }
+        // returns -1 if there are no matches
         return -1;
     }
 }

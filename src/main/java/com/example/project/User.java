@@ -44,6 +44,7 @@ public class User{
     public void setBooks(Book[] b) {
         books = b;
     }
+    
     // Returns a list of details of each book for the user (empty forany items in the list that are null)
     /* Format:
     [First Book]
